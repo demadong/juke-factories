@@ -15,7 +15,7 @@ describe('`PlayerFactory` factory', function() {
       // console.log("args: ");
       // console.dir( arguments);
       if (arguments[0] == 'audio') {
-        console.log("0th argument is audio")
+        //console.log("0th argument is audio")
         audioMock = elem
 
       }

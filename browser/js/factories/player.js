@@ -1,8 +1,7 @@
 // Player factory -- controls player functionality
-var audio = document.createElement('audio');
-
 
 app.factory('PlayerFactory', function() {
+	var audio = document.createElement('audio');
 	var currentSong = null;
 	var songList = null;
 	var playerObj = {
