@@ -10,8 +10,14 @@ describe('`PlayerFactory` factory', function() {
     var createElement = document.createElement
     document.createElement = function () {
       var elem = createElement.apply(document, arguments)
+      // console.log("elem: ");
+      //   console.dir(elem);
+      // console.log("args: ");
+      // console.dir( arguments);
       if (arguments[0] == 'audio') {
+        console.log("0th argument is audio")
         audioMock = elem
+
       }
       return elem
     }
@@ -152,6 +158,7 @@ describe('`PlayerFactory` factory', function() {
     })
     it('is a decimal between 0 and 1 corresponding to audio play progress', function(done) {
       this.timeout(6000)
+      //audioMock = document.getElementsByTagName('audio')[0];
       audioMock.addEventListener('playing', function() {
         setTimeout(function() {
           // the song is about 59 seconds long
