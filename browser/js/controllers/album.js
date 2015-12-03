@@ -1,4 +1,4 @@
-app.controller('AlbumCtrl', function($scope, $http, $rootScope) {
+app.controller('AlbumCtrl', function($scope, $http, $rootScope, StatsFactory) {
 
   // load our initial data
   $http.get('/api/albums/')
@@ -10,7 +10,15 @@ app.controller('AlbumCtrl', function($scope, $http, $rootScope) {
       song.audioUrl = '/api/songs/' + song._id + '.audio';
     });
     $scope.album = album;
-  }).catch(console.error.bind(console));
+  })
+  .then(function() {
+    return StatsFactory.totalTime($scope.album)
+  })
+  .then(function(duration) {
+    $scope.album.duration = Math.round(duration/60).toString() + ":00 minutes" ;
+  })
+  .catch(console.error.bind(console));
+
 
   // main toggle
   $scope.toggle = function (song) {

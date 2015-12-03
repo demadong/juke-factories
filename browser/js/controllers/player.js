@@ -1,7 +1,4 @@
-app.controller('PlayerCtrl', function($scope, $rootScope){
-
-  // initialize audio player
-  var audio = document.createElement('audio');
+app.controller('PlayerCtrl', function($scope, $rootScope, PlayerFactory){
   audio.addEventListener('ended', function () {
     $scope.next();
   });
@@ -37,9 +34,6 @@ app.controller('PlayerCtrl', function($scope, $rootScope){
     if (song === $scope.currentSong) return audio.play();
     // enable loading new song
     $scope.currentSong = song;
-    audio.src = song.audioUrl;
-    audio.load();
-    audio.play();
   }
 
   // outgoing events (to Album)
