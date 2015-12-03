@@ -1,10 +1,11 @@
 // Player factory -- controls player functionality
 
-app.factory('PlayerFactory', function() {
+app.factory('PlayerFactory', function($rootScope) {
 	var audio = document.createElement('audio');
 	var currentSong = null;
 	var songList = null;
 	var playerObj = {
+		audio: audio,
 		//start -- loads & plays a song
 		start: function(song, songObj) {
 			if(songObj) songList = songObj.songs;
@@ -58,7 +59,9 @@ app.factory('PlayerFactory', function() {
 		//getProgress -- gets percentage of song done 
 		getProgress: function() {
 			if (!currentSong) return 0;
-			return audio.currentTime / audio.duration;
+			var progress = audio.currentTime / audio.duration;
+			$rootScope.$digest();
+			return progress;
 		}
 	};
 

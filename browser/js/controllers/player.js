@@ -1,43 +1,32 @@
 app.controller('PlayerCtrl', function($scope, $rootScope, PlayerFactory){
+  var player = PlayerFactory;
+  var audio = player.audio;
+  var progress;
   audio.addEventListener('ended', function () {
-    $scope.next();
+    player.next();
   });
   audio.addEventListener('timeupdate', function () {
-    $scope.progress = 100 * audio.currentTime / audio.duration;
-    $scope.$digest();
+    progress = player.getProgress();
   });
 
   // state variables
-  $scope.currentSong;
-  $scope.playing = false;
+  var currentSong;
+  var isPlaying = player.isPlaying();
 
   // main toggle
   $scope.toggle = function (song) {
-    if ($scope.playing) $rootScope.$broadcast('pause');
-    else $rootScope.$broadcast('play', song);
+    if (isPlaying) player.pause();
+    else player.start(song);
   }
 
   // incoming events (from Album or toggle)
-  $scope.$on('pause', pause);
-  $scope.$on('play', play);
+  //$scope.$on('pause', pause);
+  //$scope.$on('play', play);
 
   // functionality
-  function pause () {
-    audio.pause();
-    $scope.playing = false;
-  }
-  function play (event, song){
-    // stop existing audio (e.g. other song) in any case
-    pause();
-    $scope.playing = true;
-    // resume current song
-    if (song === $scope.currentSong) return audio.play();
-    // enable loading new song
-    $scope.currentSong = song;
-  }
 
   // outgoing events (to Album)
-  $scope.next = function(){ $rootScope.$broadcast('next'); };
-  $scope.prev = function(){ $rootScope.$broadcast('prev'); };
+  $scope.next = player.next();
+  $scope.prev = player.previous();
 
 });

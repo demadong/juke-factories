@@ -1,5 +1,6 @@
-app.controller('AlbumCtrl', function($scope, $http, $rootScope, StatsFactory) {
-
+app.controller('AlbumCtrl', function($scope, $http, $rootScope, PlayerFactory, StatsFactory) {
+  var player = PlayerFactory;
+  var audio = player.audio;
   // load our initial data
   $http.get('/api/albums/')
   .then(res => $http.get('/api/albums/' + res.data[1]._id))
@@ -22,24 +23,15 @@ app.controller('AlbumCtrl', function($scope, $http, $rootScope, StatsFactory) {
 
   // main toggle
   $scope.toggle = function (song) {
-    if ($scope.playing) $rootScope.$broadcast('pause');
-    else $rootScope.$broadcast('play', song);
+    if (player.isPlaying()) player.pause();
+    else player.start(song);
   }
 
   // incoming events (from Player, toggle, or skip)
-  $scope.$on('pause', pause);
-  $scope.$on('play', play);
-  $scope.$on('next', next);
-  $scope.$on('prev', prev);
-
-  // functionality
-  function pause () {
-    $scope.playing = false;
-  }
-  function play (event, song){
-    $scope.playing = true;
-    $scope.currentSong = song;
-  };
+  //$scope.$on('pause', pause);
+  //$scope.$on('play', play);
+  //$scope.$on('next', next);
+  //$scope.$on('prev', prev);
 
   // a "true" modulo that wraps negative to the top of the range
   function mod (num, m) { return ((num%m)+m)%m; };
